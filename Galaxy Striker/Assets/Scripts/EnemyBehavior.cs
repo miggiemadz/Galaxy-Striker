@@ -9,6 +9,12 @@ public class EnemyBehavior : MonoBehaviour
 
     [SerializeField] private UiManager uiScript;
 
+    private GameObject shipSprite;
+    private GameObject explosionSprite;
+
+    private float explosionTimer = .5f;
+    private float explosionTimeCounter;
+
     private float enemySpeed;
     private int health = 15;
     private int points = 15;
@@ -19,6 +25,10 @@ public class EnemyBehavior : MonoBehaviour
     void Start()
     {
         uiScript = GameObject.Find("UI").GetComponent<UiManager>();
+        shipSprite = transform.GetChild(0).gameObject;
+        explosionSprite = transform.GetChild(1).gameObject;
+
+        explosionSprite.SetActive(false);
     }
 
     void Update()
@@ -28,8 +38,15 @@ public class EnemyBehavior : MonoBehaviour
 
         if (health <= 0)
         {
+            shipSprite.SetActive(false);
+            explosionSprite .SetActive(true);
             uiScript.TotalPoints += points;
-            Destroy(gameObject);
+            rigidbody2.velocity = Vector3.zero;
+            explosionTimeCounter += Time.deltaTime;
+            if (explosionTimeCounter > explosionTimer)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }

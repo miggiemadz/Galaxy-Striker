@@ -9,8 +9,12 @@ public class UiManager : MonoBehaviour
     private TextMeshProUGUI pointsCounter;
     private TextMeshProUGUI healthCounter;
     private EarthBehavior earthScript;
+    private GameObject buttons;
 
     private int totalPoints;
+
+    private float buttonsTimer = 2f;
+    private float buttomsTimeCounter;
 
     [SerializeField] private EnemySpawner spawnerScript;
 
@@ -22,10 +26,18 @@ public class UiManager : MonoBehaviour
         pointsCounter = transform.GetChild(1).GetComponent<TextMeshProUGUI>();
         healthCounter = transform.GetChild(2).GetComponent<TextMeshProUGUI>();
         earthScript = GameObject.Find("Earth").GetComponent<EarthBehavior>();
+        buttons = transform.GetChild(3).gameObject;
     }
 
     void Update()
     {
+        buttomsTimeCounter += Time.deltaTime;
+
+        if (buttomsTimeCounter > buttonsTimer)
+        {
+            buttons.SetActive(false);
+        }
+
         if (earthScript.Health == 0)
         {
             Time.timeScale = 0;
